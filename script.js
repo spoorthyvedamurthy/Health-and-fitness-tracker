@@ -1,54 +1,40 @@
-function greet(name) {
-    console.log("hell0"+name)
-}
-greet("yashwanth");
+// Get the button element
+const button = document.getElementById("calcBtn");
 
+// Add click event to button
+button.addEventListener("click", function () {
 
-function add(a,b) {
-    console.log(a+b);
-}
-add(5,6)
+  // Get height and weight values from input
+  let height = document.getElementById("height").value;
+  let weight = document.getElementById("weight").value;
 
+  // Convert height from cm to meters
+  height = height / 100;
 
-function addsum(a,b) {
-    return a+b;
-}
-let res=addsum(10,5);
-console.log(res);
+  // Calculate BMI
+  let bmi = weight / (height * height);
 
-function square(c){
-    return c*c;
-}
-let sque=square(2);
-console.log(sque);
+  // Round to 2 decimal places
+  bmi = bmi.toFixed(2);
 
-function evvehicle(bateryper){
-    if (bateryper===100){
-        return "400km"
-    }else if (bateryper===75){
-        return "300km"
-    }else if (bateryper===50){
-        return "200km"
-    }else if (bateryper===25){
-        return "100km"
-    }else{
-        return "lowbaterry/no charge"
-    }
-}
-console.log(evvehicle(75))
-console.log(evvehicle(10))
+  // Variable to store result text
+  let resultText = "";
 
-console.log("JS file loaded");
+  // Conditions for BMI categories
+  if (bmi < 18.5) {
+    resultText = "Underweight ??";
+  } 
+  else if (bmi >= 18.5 && bmi < 24.9) {
+    resultText = "Normal weight ?";
+  } 
+  else if (bmi >= 25 && bmi < 29.9) {
+    resultText = "Overweight ??";
+  } 
+  else {
+    resultText = "Obese ?";
+  }
 
-document.addEventListener("DOMContentLoaded", function () {
-  const bookBtn = document.getElementById("bookBtn");
-
-  console.log(bookBtn); // should NOT be null
-
-  bookBtn.addEventListener("click", function () {
-    bookBtn.textContent = "Booked Drive";
-    bookBtn.disabled = true;
-    bookBtn.style.backgroundColor = "#555";
-    bookBtn.style.cursor = "not-allowed";
-  });
+  // Display result on screen
+  document.getElementById("result").innerText =
+    "Your BMI: " + bmi + " (" + resultText + ")";
 });

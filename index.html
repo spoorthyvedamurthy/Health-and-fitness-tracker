@@ -3,22 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Future EV</title>
+  <title>Health & Fitness Tracker</title>
   <link rel="stylesheet" href="design.css">
 </head>
 <body>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Drive the Future</h1>
-      <p>Smart, sustainable electric vehicles built for tomorrow.</p>
+  <div class="container">
+    <h1>Health & Fitness Tracker</h1>
+    <p>Check your BMI and stay healthy!</p>
 
-      <!-- IMPORTANT: id must match -->
-      <button id="bookBtn">Book a Test Drive</button>
-    </div>
-  </section>
+    <input type="number" id="height" placeholder="Enter height (cm)">
+    <input type="number" id="weight" placeholder="Enter weight (kg)">
 
-  <!-- JS MUST BE HERE (bottom) -->
+    <button id="calcBtn">Calculate BMI</button>
+
+    <h2 id="result"></h2>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
