@@ -1,57 +1,58 @@
-﻿const calcBtn = document.getElementById("calcBtn");
+﻿document.addEventListener("DOMContentLoaded", function () {
 
-calcBtn.addEventListener("click", function () {
+  const calcBtn = document.getElementById("calcBtn");
 
-  let age = document.getElementById("age").value;
-  let height = document.getElementById("height").value;
-  let weight = document.getElementById("weight").value;
+  calcBtn.addEventListener("click", function () {
 
-  if (!age || !height || !weight) {
-    document.getElementById("result").innerText = "Please enter all values!";
-    return;
-  }
+    let age = document.getElementById("age").value;
+    let height = document.getElementById("height").value;
+    let weight = document.getElementById("weight").value;
 
-  height = height / 100;
+    if (!age || !height || !weight) {
+      document.getElementById("result").innerText = "Please enter all values!";
+      return;
+    }
 
-  let bmi = (weight / (height * height)).toFixed(2);
+    height = height / 100;
 
-  let status = "";
-  let suggestion = "";
-  let color = "white";
+    let bmi = (weight / (height * height)).toFixed(2);
 
-  if (bmi < 18.5) {
-    status = "Underweight";
-    suggestion = "Increase calorie intake & strength training 💪";
-    color = "#00a8ff";
-  } 
-  else if (bmi < 24.9) {
-    status = "Normal";
-    suggestion = "Great! Maintain your fitness 👍";
-    color = "#2ed573";
-  } 
-  else if (bmi < 29.9) {
-    status = "Overweight";
-    suggestion = "Add cardio & reduce junk food ⚠️";
-    color = "#ffa502";
-  } 
-  else {
-    status = "Obese";
-    suggestion = "Strict workout + diet plan needed 🚨";
-    color = "#ff4757";
-  }
+    let status = "";
+    let suggestion = "";
+    let color = "white";
 
-  let bodyFat = (1.2 * bmi + 0.23 * age - 5.4).toFixed(2);
-  let calories = Math.round(weight * 30);
+    if (bmi < 18.5) {
+      status = "Underweight";
+      suggestion = "Increase calorie intake & strength training";
+      color = "#00a8ff";
+    } 
+    else if (bmi < 24.9) {
+      status = "Normal";
+      suggestion = "Great! Maintain your fitness";
+      color = "#2ed573";
+    } 
+    else if (bmi < 29.9) {
+      status = "Overweight";
+      suggestion = "Add cardio & reduce junk food";
+      color = "#ffa502";
+    } 
+    else {
+      status = "Obese";
+      suggestion = "Strict workout + diet plan needed";
+      color = "#ff4757";
+    }
 
-  let result = document.getElementById("result");
-  let suggestionBox = document.getElementById("suggestion");
+    let bodyFat = (1.2 * bmi + 0.23 * age - 5.4).toFixed(2);
+    let calories = Math.round(weight * 30);
 
-  result.innerText = `BMI: ${bmi} (${status})`;
-  suggestionBox.innerText = 
-    `Body Fat: ${bodyFat}% 
-Calories: ${calories} kcal/day
-${suggestion}`;
+    let result = document.getElementById("result");
+    let suggestionBox = document.getElementById("suggestion");
 
-  // 🎨 Apply color based on health
-  result.style.color = color;
-}
+    result.innerText = `BMI: ${bmi} (${status})`;
+    suggestionBox.innerText =
+      `Body Fat: ${bodyFat}% | Calories: ${calories} kcal | ${suggestion}`;
+
+    result.style.color = color;
+  });
+
+});
