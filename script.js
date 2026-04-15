@@ -1,21 +1,13 @@
-﻿// MAIN BUTTON
-const calcBtn = document.getElementById("calcBtn");
-const saveBtn = document.getElementById("saveBtn");
+﻿const calcBtn = document.getElementById("calcBtn");
 
-// LOAD HISTORY
-window.onload = function () {
-  showHistory();
-};
-
-// CALCULATE HEALTH
 calcBtn.addEventListener("click", function () {
 
   let age = document.getElementById("age").value;
   let height = document.getElementById("height").value;
   let weight = document.getElementById("weight").value;
 
-  if (age === "" || height === "" || weight === "") {
-    document.getElementById("result").innerText = "Please fill all fields!";
+  if (!age || !height || !weight) {
+    document.getElementById("result").innerText = "Please enter all values!";
     return;
   }
 
@@ -25,74 +17,41 @@ calcBtn.addEventListener("click", function () {
 
   let status = "";
   let suggestion = "";
+  let color = "white";
 
   if (bmi < 18.5) {
     status = "Underweight";
-    suggestion = "Eat more nutritious food and do strength training.";
-  } else if (bmi < 24.9) {
-    status = "Normal weight";
-    suggestion = "Great! Maintain your lifestyle.";
-  } else if (bmi < 29.9) {
+    suggestion = "Increase calorie intake & strength training 💪";
+    color = "#00a8ff";
+  } 
+  else if (bmi < 24.9) {
+    status = "Normal";
+    suggestion = "Great! Maintain your fitness 👍";
+    color = "#2ed573";
+  } 
+  else if (bmi < 29.9) {
     status = "Overweight";
-    suggestion = "Exercise more and eat healthy.";
-  } else {
+    suggestion = "Add cardio & reduce junk food ⚠️";
+    color = "#ffa502";
+  } 
+  else {
     status = "Obese";
-    suggestion = "Follow a strict fitness plan.";
+    suggestion = "Strict workout + diet plan needed 🚨";
+    color = "#ff4757";
   }
 
-  let bodyFat = (1.2 * bmi) + (0.23 * age) - 5.4;
-  bodyFat = bodyFat.toFixed(2);
+  let bodyFat = (1.2 * bmi + 0.23 * age - 5.4).toFixed(2);
+  let calories = Math.round(weight * 30);
 
-  let calories = weight * 30;
+  let result = document.getElementById("result");
+  let suggestionBox = document.getElementById("suggestion");
 
-  document.getElementById("result").innerText =
-    `BMI: ${bmi} (${status})`;
-
-  document.getElementById("suggestion").innerText =
+  result.innerText = `BMI: ${bmi} (${status})`;
+  suggestionBox.innerText = 
     `Body Fat: ${bodyFat}% 
-Calories/day: ${calories} kcal
-Advice: ${suggestion}`;
-});
+Calories: ${calories} kcal/day
+${suggestion}`;
 
-// SAVE WORKOUT
-saveBtn.addEventListener("click", function () {
-
-  let workout = document.getElementById("workout").value;
-  let minutes = document.getElementById("minutes").value;
-
-  if (workout === "" || minutes === "") {
-    alert("Enter workout details!");
-    return;
-  }
-
-  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
-
-  let today = new Date().toLocaleDateString();
-
-  data.push({
-    date: today,
-    workout: workout,
-    minutes: minutes
-  });
-
-  localStorage.setItem("fitnessData", JSON.stringify(data));
-
-  showHistory();
-
-  document.getElementById("workout").value = "";
-  document.getElementById("minutes").value = "";
-});
-
-// SHOW HISTORY
-function showHistory() {
-  let list = document.getElementById("history");
-  list.innerHTML = "";
-
-  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
-
-  data.forEach(item => {
-    let li = document.createElement("li");
-    li.innerText = `${item.date} - ${item.workout} (${item.minutes} mins)`;
-    list.appendChild(li);
-  });
+  // 🎨 Apply color based on health
+  result.style.color = color;
 }

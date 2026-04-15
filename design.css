@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background: linear-gradient(to right, #00c853, #b2ff59);
+  background: url("https://images.unsplash.com/photo-1554284126-aa88f22d8b74") no-repeat center center/cover;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,57 +8,55 @@ body {
   margin: 0;
 }
 
+/* Glass effect container */
 .container {
-  background: white;
+  background: rgba(0, 0, 0, 0.7);
   padding: 30px;
   border-radius: 12px;
   text-align: center;
   width: 320px;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  color: white;
+  backdrop-filter: blur(10px);
 }
 
 h1 {
   margin-bottom: 10px;
-  color: #222;
 }
 
 p {
-  color: #555;
+  color: #ddd;
 }
 
 input {
   width: 90%;
   padding: 12px;
   margin: 10px 0;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
 }
 
 button {
-  background-color: #00c853;
+  background-color: #ff4757;
   color: white;
   border: none;
   padding: 12px;
   width: 100%;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: bold;
-  font-size: 15px;
   transition: 0.3s;
 }
 
 button:hover {
-  background-color: #009624;
+  background-color: #e84118;
 }
 
 #result {
   margin-top: 15px;
   font-weight: bold;
-  color: #333;
 }
 
 #suggestion {
   margin-top: 10px;
-  color: #444;
 }
