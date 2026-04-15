@@ -9,12 +9,20 @@
 
 <div class="container">
   <h1>Workout Tracker</h1>
+  <p>Track your daily fitness</p>
 
+  <!-- INPUT -->
   <input type="text" id="workout" placeholder="Workout (Running, Yoga)">
   <input type="number" id="minutes" placeholder="Minutes">
 
   <button onclick="saveWorkout()">Save Workout</button>
 
+  <!-- IMAGES -->
+  <h3>Workout Ideas</h3>
+  <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e" width="100%" style="margin-top:10px;">
+  <img src="https://images.unsplash.com/photo-1579758629938-03607ccdbaba" width="100%" style="margin-top:10px;">
+
+  <!-- HISTORY -->
   <h3>Workout History</h3>
   <ul id="history"></ul>
 
@@ -22,10 +30,13 @@
 </div>
 
 <script>
+
+// 🔙 Go back
 function goBack() {
   window.location.href = "index.html";
 }
 
+// 💾 Save workout
 function saveWorkout() {
   let workout = document.getElementById("workout").value;
   let minutes = document.getElementById("minutes").value;
@@ -53,20 +64,36 @@ function saveWorkout() {
   document.getElementById("minutes").value = "";
 }
 
+// 📜 Show history
 function showHistory() {
   let list = document.getElementById("history");
   list.innerHTML = "";
 
   let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
 
-  data.forEach(item => {
+  data.forEach((item, index) => {
     let li = document.createElement("li");
-    li.innerText = `${item.date} - ${item.workout} (${item.minutes} mins)`;
+
+    li.innerHTML = `
+      ${item.date} - ${item.workout} (${item.minutes} mins)
+      <button onclick="deleteItem(${index})">❌</button>
+    `;
+
     list.appendChild(li);
   });
 }
 
+// ❌ Delete workout
+function deleteItem(index) {
+  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
+  data.splice(index, 1);
+  localStorage.setItem("fitnessData", JSON.stringify(data));
+  showHistory();
+}
+
+// 🔄 Load history on page load
 window.onload = showHistory;
+
 </script>
 
 </body>
