@@ -74,10 +74,9 @@ function showHistory() {
   data.forEach((item, index) => {
     let li = document.createElement("li");
 
-    li.innerHTML = `
-      ${item.date} - ${item.workout} (${item.minutes} mins)
-      <button onclick="deleteItem(${index})">❌</button>
-    `;
+    li.innerHTML =
+      item.date + " - " + item.workout + " (" + item.minutes + " mins) " +
+      '<button onclick="deleteItem(' + index + ')">❌</button>';
 
     list.appendChild(li);
   });
