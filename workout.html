@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Workout Tracker</title>
+  <link rel="stylesheet" href="design.css">
+</head>
+<body>
+
+<div class="container">
+  <h1>Workout Tracker</h1>
+
+  <input type="text" id="workout" placeholder="Workout (Running, Yoga)">
+  <input type="number" id="minutes" placeholder="Minutes">
+
+  <button onclick="saveWorkout()">Save Workout</button>
+
+  <h3>Workout History</h3>
+  <ul id="history"></ul>
+
+  <button onclick="goBack()">← Back to Health</button>
+</div>
+
+<script>
+function goBack() {
+  window.location.href = "index.html";
+}
+
+function saveWorkout() {
+  let workout = document.getElementById("workout").value;
+  let minutes = document.getElementById("minutes").value;
+
+  if (!workout || !minutes) {
+    alert("Enter all details!");
+    return;
+  }
+
+  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
+
+  let today = new Date().toLocaleDateString();
+
+  data.push({
+    date: today,
+    workout: workout,
+    minutes: minutes
+  });
+
+  localStorage.setItem("fitnessData", JSON.stringify(data));
+
+  showHistory();
+
+  document.getElementById("workout").value = "";
+  document.getElementById("minutes").value = "";
+}
+
+function showHistory() {
+  let list = document.getElementById("history");
+  list.innerHTML = "";
+
+  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
+
+  data.forEach(item => {
+    let li = document.createElement("li");
+    li.innerText = `${item.date} - ${item.workout} (${item.minutes} mins)`;
+    list.appendChild(li);
+  });
+}
+
+window.onload = showHistory;
+</script>
+
+</body>
+</html>
