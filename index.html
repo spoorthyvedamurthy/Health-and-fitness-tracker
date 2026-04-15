@@ -2,41 +2,73 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Health & Fitness Tracker</title>
+  <title>Health Tracker</title>
   <link rel="stylesheet" href="design.css">
 </head>
 <body>
 
-  <div class="container">
-    <h1>Health & Fitness Tracker</h1>
-    <p>Track your health and stay fit!</p>
+<div class="container">
+  <h1>Health Tracker</h1>
 
-    <!-- USER INPUTS -->
-    <input type="number" id="age" placeholder="Enter age">
-    <input type="number" id="height" placeholder="Enter height (cm)">
-    <input type="number" id="weight" placeholder="Enter weight (kg)">
+  <input type="number" id="age" placeholder="Age">
+  <input type="number" id="height" placeholder="Height (cm)">
+  <input type="number" id="weight" placeholder="Weight (kg)">
 
-    <button id="calcBtn">Check Health</button>
+  <button onclick="calculate()">Check Health</button>
 
-    <!-- RESULTS -->
-    <h2 id="result"></h2>
-    <p id="suggestion"></p>
+  <h2 id="result"></h2>
+  <p id="suggestion"></p>
 
-    <hr>
+  <hr>
 
-    <!-- WORKOUT TRACKER -->
-    <h3>Daily Workout Tracker</h3>
+  <!-- NAVIGATION -->
+  <button onclick="goToWorkout()">Go to Workout Tracker →</button>
+</div>
 
-    <input type="text" id="workout" placeholder="What workout did you do?">
-    <input type="number" id="minutes" placeholder="Minutes">
+<script>
+function calculate() {
+  let age = document.getElementById("age").value;
+  let height = document.getElementById("height").value / 100;
+  let weight = document.getElementById("weight").value;
 
-    <button id="saveBtn">Save Today's Activity</button>
+  if (!age || !height || !weight) {
+    document.getElementById("result").innerText = "Enter all fields!";
+    return;
+  }
 
-    <ul id="history"></ul>
-  </div>
+  let bmi = (weight / (height * height)).toFixed(2);
 
-  <script src="script.js"></script>
+  let status = "";
+  let suggestion = "";
+
+  if (bmi < 18.5) {
+    status = "Underweight";
+    suggestion = "Eat more nutritious food.";
+  } else if (bmi < 24.9) {
+    status = "Normal";
+    suggestion = "Maintain your lifestyle.";
+  } else if (bmi < 29.9) {
+    status = "Overweight";
+    suggestion = "Exercise more.";
+  } else {
+    status = "Obese";
+    suggestion = "Follow a strict fitness plan.";
+  }
+
+  let bodyFat = (1.2 * bmi + 0.23 * age - 5.4).toFixed(2);
+  let calories = weight * 30;
+
+  document.getElementById("result").innerText =
+    `BMI: ${bmi} (${status})`;
+
+  document.getElementById("suggestion").innerText =
+    `Body Fat: ${bodyFat}% | Calories: ${calories} kcal | ${suggestion}`;
+}
+
+function goToWorkout() {
+  window.location.href = "workout.html";
+}
+</script>
 
 </body>
 </html>
