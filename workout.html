@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Workout Tracker</title>
-  <link rel="stylesheet" href="design.css">
+<meta charset="UTF-8">
+<title>Workout Dashboard</title>
+<link rel="stylesheet" href="design.css">
 </head>
 <body>
 
 <div class="container">
-  <h1>Workout Tracker</h1>
-  <p>Track your daily fitness</p>
+  <h1>Workout Dashboard</h1>
+  <p>Track your daily progress</p>
 
-  <!-- INPUT -->
-  <input type="text" id="workout" placeholder="Workout (Running, Yoga)">
+  <input type="text" id="workout" placeholder="Workout Type">
   <input type="number" id="minutes" placeholder="Minutes">
 
   <button onclick="saveWorkout()">Save Workout</button>
 
-  <!-- IMAGES -->
-  <h3>Workout Ideas</h3>
-  <img src="https://images.unsplash.com/photo-1599058917212-d750089bc07e" width="100%" style="margin-top:10px;">
-  <img src="https://images.unsplash.com/photo-1579758629938-03607ccdbaba" width="100%" style="margin-top:10px;">
+  <hr>
 
-  <!-- HISTORY -->
+  <h3>Progress Summary</h3>
+  <p id="summary"></p>
+
   <h3>Workout History</h3>
   <ul id="history"></ul>
 
@@ -30,69 +28,76 @@
 </div>
 
 <script>
-
-// 🔙 Go back
-function goBack() {
-  window.location.href = "index.html";
+function goBack(){
+ window.location.href="index.html";
 }
 
-// 💾 Save workout
-function saveWorkout() {
-  let workout = document.getElementById("workout").value;
-  let minutes = document.getElementById("minutes").value;
+function saveWorkout(){
+ let workout=document.getElementById("workout").value;
+ let minutes=document.getElementById("minutes").value;
 
-  if (!workout || !minutes) {
-    alert("Enter all details!");
-    return;
-  }
+ if(!workout || !minutes){
+   alert("Enter details");
+   return;
+ }
 
-  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
+ let data=JSON.parse(localStorage.getItem("fitnessData")) || [];
 
-  let today = new Date().toLocaleDateString();
+ let today=new Date().toLocaleDateString();
 
-  data.push({
-    date: today,
-    workout: workout,
-    minutes: minutes
-  });
+ data.push({
+   date:today,
+   workout:workout,
+   minutes:Number(minutes)
+ });
 
-  localStorage.setItem("fitnessData", JSON.stringify(data));
+ localStorage.setItem("fitnessData",JSON.stringify(data));
 
-  showHistory();
+ document.getElementById("workout").value="";
+ document.getElementById("minutes").value="";
 
-  document.getElementById("workout").value = "";
-  document.getElementById("minutes").value = "";
+ showHistory();
 }
 
-// 📜 Show history
-function showHistory() {
-  let list = document.getElementById("history");
-  list.innerHTML = "";
+function showHistory(){
+ let list=document.getElementById("history");
+ let summary=document.getElementById("summary");
 
-  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
+ list.innerHTML="";
 
-  data.forEach((item, index) => {
-    let li = document.createElement("li");
+ let data=JSON.parse(localStorage.getItem("fitnessData")) || [];
 
-    li.innerHTML =
-      item.date + " - " + item.workout + " (" + item.minutes + " mins) " +
-      '<button onclick="deleteItem(' + index + ')">❌</button>';
+ let totalMinutes=0;
 
-    list.appendChild(li);
-  });
+ data.forEach((item,index)=>{
+   totalMinutes += item.minutes;
+
+   let li=document.createElement("li");
+
+   li.innerHTML =
+   item.date + " - " + item.workout + " (" + item.minutes + " mins) " +
+   '<button onclick="deleteItem('+index+')">❌</button>';
+
+   list.appendChild(li);
+ });
+
+ let totalWorkouts=data.length;
+ let lastWorkout= totalWorkouts>0 ? data[data.length-1].workout : "No workout yet";
+
+ summary.innerHTML =
+ "Total Workouts: " + totalWorkouts +
+ "<br>Total Minutes: " + totalMinutes +
+ "<br>Last Workout: " + lastWorkout;
 }
 
-// ❌ Delete workout
-function deleteItem(index) {
-  let data = JSON.parse(localStorage.getItem("fitnessData")) || [];
-  data.splice(index, 1);
-  localStorage.setItem("fitnessData", JSON.stringify(data));
-  showHistory();
+function deleteItem(index){
+ let data=JSON.parse(localStorage.getItem("fitnessData")) || [];
+ data.splice(index,1);
+ localStorage.setItem("fitnessData",JSON.stringify(data));
+ showHistory();
 }
 
-// 🔄 Load history on page load
-window.onload = showHistory;
-
+window.onload=showHistory;
 </script>
 
 </body>

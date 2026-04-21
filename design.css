@@ -1,62 +1,46 @@
-body {
-  font-family: Arial, sans-serif;
-  background: url("https://images.unsplash.com/photo-1554284126-aa88f22d8b74") no-repeat center center/cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  margin: 0;
+body{
+ font-family: Arial, sans-serif;
+ background: linear-gradient(135deg,#141e30,#243b55);
+ margin:0;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ min-height:100vh;
 }
 
-/* Glass effect container */
-.container {
-  background: rgba(0, 0, 0, 0.7);
-  padding: 30px;
-  border-radius: 12px;
-  text-align: center;
-  width: 320px;
-  color: white;
-  backdrop-filter: blur(10px);
+.container{
+ background: rgba(255,255,255,0.12);
+ color:white;
+ padding:30px;
+ width:360px;
+ border-radius:16px;
+ backdrop-filter: blur(10px);
+ box-shadow:0 8px 20px rgba(0,0,0,0.3);
 }
 
-h1 {
-  margin-bottom: 10px;
+input,button{
+ width:100%;
+ padding:12px;
+ margin:8px 0;
+ border:none;
+ border-radius:8px;
 }
 
-p {
-  color: #ddd;
+button{
+ background:#ff6b6b;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
 }
 
-input {
-  width: 90%;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 6px;
-  border: none;
-  outline: none;
+button:hover{
+ background:#ff4757;
 }
 
-button {
-  background-color: #ff4757;
-  color: white;
-  border: none;
-  padding: 12px;
-  width: 100%;
-  cursor: pointer;
-  border-radius: 6px;
-  font-weight: bold;
-  transition: 0.3s;
+ul{
+ padding-left:18px;
 }
 
-button:hover {
-  background-color: #e84118;
-}
-
-#result {
-  margin-top: 15px;
-  font-weight: bold;
-}
-
-#suggestion {
-  margin-top: 10px;
+li{
+ margin:10px 0;
 }
