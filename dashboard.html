@@ -3,105 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FitTrack Pro</title>
-
-<style>
-body{
-margin:0;
-font-family:Arial,sans-serif;
-background:linear-gradient(135deg,#2563eb,#7c3aed,#06b6d4);
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-color:white;
-}
-
-.container{
-max-width:760px;
-padding:40px 25px;
-text-align:center;
-}
-
-h1{
-font-size:56px;
-margin-bottom:10px;
-}
-
-p{
-font-size:20px;
-opacity:0.95;
-}
-
-.hero{
-width:260px;
-border-radius:20px;
-margin:28px auto;
-box-shadow:0 15px 30px rgba(0,0,0,0.25);
-}
-
-.grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px;
-margin-top:24px;
-text-align:left;
-}
-
-.box{
-background:rgba(255,255,255,0.14);
-padding:16px;
-border-radius:14px;
-}
-
-button{
-margin-top:30px;
-padding:16px 34px;
-font-size:18px;
-border:none;
-border-radius:12px;
-background:white;
-color:#2563eb;
-font-weight:bold;
-cursor:pointer;
-}
-
-@media(max-width:700px){
-.grid{grid-template-columns:1fr;}
-h1{font-size:40px;}
-}
-</style>
+<title>Dashboard</title>
+<link rel="stylesheet" href="design.css">
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
-<h1>FitTrack Pro</h1>
+<header class="topbar">
+<h1>Health Analytics Dashboard</h1>
+<p>Personal Health Insights</p>
+</header>
 
-<p>Smart Health Data Analytics Platform</p>
+<div class="card">
 
-<img class="hero" src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80">
+<input type="number" id="age" placeholder="Age">
+<input type="number" id="height" placeholder="Height (cm)">
+<input type="number" id="weight" placeholder="Weight (kg)">
 
-<div class="grid">
-
-<div class="box">📊 Analyze BMI, Calories & Body Metrics</div>
-
-<div class="box">📈 Visualize Daily Fitness Progress</div>
-
-<div class="box">🧠 Personalized Recommendations</div>
-
-<div class="box">📉 Track Health Risk Indicators</div>
+<button id="calcBtn">Run Analysis</button>
 
 </div>
 
-<button onclick="startNow()">Launch Dashboard →</button>
+<div class="stats-grid">
+
+<div class="stat-card">
+<h3>BMI</h3>
+<p id="result">--</p>
+</div>
+
+<div class="stat-card">
+<h3>Calories</h3>
+<p id="caloriesBox">--</p>
+</div>
+
+<div class="stat-card">
+<h3>Health Score</h3>
+<p id="healthScore">--</p>
+</div>
+
+<div class="stat-card">
+<h3>Risk Level</h3>
+<p id="riskLevel">--</p>
+</div>
+
+<div class="stat-card full">
+<h3>Recommendation</h3>
+<p id="suggestion">Enter details above.</p>
+</div>
 
 </div>
+
+<button class="secondary-btn" onclick="goWorkout()">
+Workout Analytics →
+</button>
+
+</div>
+
+<script src="script.js"></script>
 
 <script>
-function startNow(){
-window.location.href="dashboard.html";
+function goWorkout(){
+window.location.href="workout.html";
 }
 </script>
 
