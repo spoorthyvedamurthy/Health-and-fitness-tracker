@@ -1,58 +1,74 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
 
-  const calcBtn = document.getElementById("calcBtn");
+const btn = document.getElementById("calcBtn");
 
-  calcBtn.addEventListener("click", function () {
+if(btn){
 
-    let age = document.getElementById("age").value;
-    let height = document.getElementById("height").value;
-    let weight = document.getElementById("weight").value;
+btn.addEventListener("click", function(){
 
-    if (!age || !height || !weight) {
-      document.getElementById("result").innerText = "Please enter all values!";
-      return;
-    }
+let age = Number(document.getElementById("age").value);
+let height = Number(document.getElementById("height").value);
+let weight = Number(document.getElementById("weight").value);
 
-    height = height / 100;
+if(!age || !height || !weight){
 
-    let bmi = (weight / (height * height)).toFixed(2);
+document.getElementById("result").innerText="Enter Values";
+document.getElementById("caloriesBox").innerText="--";
+document.getElementById("healthScore").innerText="--";
+document.getElementById("riskLevel").innerText="--";
+document.getElementById("suggestion").innerText="Please fill all fields.";
 
-    let status = "";
-    let suggestion = "";
-    let color = "white";
+return;
+}
 
-    if (bmi < 18.5) {
-      status = "Underweight";
-      suggestion = "Increase calorie intake & strength training";
-      color = "#00a8ff";
-    } 
-    else if (bmi < 24.9) {
-      status = "Normal";
-      suggestion = "Great! Maintain your fitness";
-      color = "#2ed573";
-    } 
-    else if (bmi < 29.9) {
-      status = "Overweight";
-      suggestion = "Add cardio & reduce junk food";
-      color = "#ffa502";
-    } 
-    else {
-      status = "Obese";
-      suggestion = "Strict workout + diet plan needed";
-      color = "#ff4757";
-    }
+height = height / 100;
 
-    let bodyFat = (1.2 * bmi + 0.23 * age - 5.4).toFixed(2);
-    let calories = Math.round(weight * 30);
+let bmi = weight / (height * height);
+bmi = bmi.toFixed(1);
 
-    let result = document.getElementById("result");
-    let suggestionBox = document.getElementById("suggestion");
+let calories = Math.round(weight * 30);
 
-    result.innerText = `BMI: ${bmi} (${status})`;
-    suggestionBox.innerText =
-      `Body Fat: ${bodyFat}% | Calories: ${calories} kcal | ${suggestion}`;
+let score = 100;
+let risk = "";
+let suggestion = "";
 
-    result.style.color = color;
-  });
+if(bmi < 18.5){
+score -= 25;
+risk = "Nutrition Risk";
+suggestion = "Increase calorie intake and strength workouts.";
+}
+else if(bmi < 24.9){
+score -= 5;
+risk = "Low Risk";
+suggestion = "Maintain current healthy routine.";
+}
+else if(bmi < 29.9){
+score -= 20;
+risk = "Moderate Risk";
+suggestion = "Increase cardio and reduce processed foods.";
+}
+else{
+score -= 35;
+risk = "High Risk";
+suggestion = "Start structured fitness and nutrition plan.";
+}
+
+if(age > 35){
+score -= 10;
+}
+
+if(score < 0){
+score = 0;
+}
+
+document.getElementById("result").innerText = bmi;
+document.getElementById("caloriesBox").innerText = calories + " kcal";
+document.getElementById("healthScore").innerText = score + "/100";
+document.getElementById("riskLevel").innerText = risk;
+document.getElementById("suggestion").innerText = suggestion;
+
+});
+
+}
 
 });

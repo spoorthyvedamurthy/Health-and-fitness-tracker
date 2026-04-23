@@ -2,42 +2,134 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Workout Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitTrack Pro Analytics</title>
 <link rel="stylesheet" href="design.css">
+
+<style>
+.chart{margin-top:20px;}
+.bar-row{margin:12px 0;}
+.bar-label{font-size:14px;margin-bottom:5px;}
+.bar{
+height:22px;
+background:linear-gradient(90deg,#2563eb,#06b6d4);
+border-radius:20px;
+color:white;
+font-size:12px;
+text-align:right;
+padding-right:8px;
+line-height:22px;
+}
+.analytics{
+margin-top:20px;
+padding:18px;
+background:white;
+border-radius:16px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+}
+.gallery{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-top:20px;
+}
+.gallery img{
+width:100%;
+height:130px;
+object-fit:cover;
+border-radius:14px;
+}
+li{margin:10px 0;}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-  <h1>Workout Dashboard</h1>
-  <p>Track your daily progress</p>
+<div class="app">
 
-  <input type="text" id="workout" placeholder="Workout Type">
-  <input type="number" id="minutes" placeholder="Minutes">
+<header class="topbar">
+<h1>Workout Analytics</h1>
+<p>Data Science Fitness Dashboard</p>
+</header>
 
-  <button onclick="saveWorkout()">Save Workout</button>
+<div class="card">
 
-  <hr>
+<input type="text" id="workout" placeholder="Workout Type">
+<input type="number" id="minutes" placeholder="Minutes">
 
-  <h3>Progress Summary</h3>
-  <p id="summary"></p>
+<button onclick="saveWorkout()">Save Workout</button>
 
-  <h3>Workout History</h3>
-  <ul id="history"></ul>
+</div>
 
-  <button onclick="goBack()">← Back to Health</button>
+<div class="stats-grid">
+
+<div class="stat-card">
+<h3>Total Workouts</h3>
+<p id="totalWorkouts">0</p>
+</div>
+
+<div class="stat-card">
+<h3>Total Minutes</h3>
+<p id="totalMinutes">0</p>
+</div>
+
+<div class="stat-card">
+<h3>Avg Minutes</h3>
+<p id="avgMinutes">0</p>
+</div>
+
+<div class="stat-card">
+<h3>Top Workout</h3>
+<p id="topWorkout">--</p>
+</div>
+
+<div class="stat-card full">
+<h3>Progress Visualization</h3>
+<div id="chart" class="chart"></div>
+</div>
+
+</div>
+
+<div class="analytics">
+<h3>AI Recommendation</h3>
+<p id="insight">Start logging workouts to generate insights.</p>
+</div>
+
+<div class="card">
+
+<h2>Workout Inspiration</h2>
+
+<div class="gallery">
+<img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=600&q=80">
+<img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=600&q=80">
+<img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80">
+<img src="https://images.unsplash.com/photo-1546483875-ad9014c88eba?auto=format&fit=crop&w=600&q=80">
+</div>
+
+</div>
+
+<div class="card">
+<h2>Workout History</h2>
+<ul id="history"></ul>
+</div>
+
+<button class="secondary-btn" onclick="goBack()">← Back to Dashboard</button>
+
 </div>
 
 <script>
+
 function goBack(){
- window.location.href="index.html";
+ window.location.href="dashboard.html";
 }
 
 function saveWorkout(){
- let workout=document.getElementById("workout").value;
- let minutes=document.getElementById("minutes").value;
+
+ let workout=document.getElementById("workout").value.trim();
+ let minutes=Number(document.getElementById("minutes").value);
 
  if(!workout || !minutes){
-   alert("Enter details");
+   alert("Enter workout details");
    return;
  }
 
@@ -48,7 +140,7 @@ function saveWorkout(){
  data.push({
    date:today,
    workout:workout,
-   minutes:Number(minutes)
+   minutes:minutes
  });
 
  localStorage.setItem("fitnessData",JSON.stringify(data));
@@ -56,48 +148,96 @@ function saveWorkout(){
  document.getElementById("workout").value="";
  document.getElementById("minutes").value="";
 
- showHistory();
-}
-
-function showHistory(){
- let list=document.getElementById("history");
- let summary=document.getElementById("summary");
-
- list.innerHTML="";
-
- let data=JSON.parse(localStorage.getItem("fitnessData")) || [];
-
- let totalMinutes=0;
-
- data.forEach((item,index)=>{
-   totalMinutes += item.minutes;
-
-   let li=document.createElement("li");
-
-   li.innerHTML =
-   item.date + " - " + item.workout + " (" + item.minutes + " mins) " +
-   '<button onclick="deleteItem('+index+')">❌</button>';
-
-   list.appendChild(li);
- });
-
- let totalWorkouts=data.length;
- let lastWorkout= totalWorkouts>0 ? data[data.length-1].workout : "No workout yet";
-
- summary.innerHTML =
- "Total Workouts: " + totalWorkouts +
- "<br>Total Minutes: " + totalMinutes +
- "<br>Last Workout: " + lastWorkout;
+ showAll();
 }
 
 function deleteItem(index){
  let data=JSON.parse(localStorage.getItem("fitnessData")) || [];
  data.splice(index,1);
  localStorage.setItem("fitnessData",JSON.stringify(data));
- showHistory();
+ showAll();
 }
 
-window.onload=showHistory;
+function showAll(){
+
+ let data=JSON.parse(localStorage.getItem("fitnessData")) || [];
+
+ let history=document.getElementById("history");
+ let chart=document.getElementById("chart");
+
+ history.innerHTML="";
+ chart.innerHTML="";
+
+ let totalMinutes=0;
+ let workoutCount={};
+
+ data.forEach((item,index)=>{
+
+   totalMinutes += item.minutes;
+
+   workoutCount[item.workout] = (workoutCount[item.workout] || 0) + 1;
+
+   let li=document.createElement("li");
+
+   li.innerHTML =
+   item.date+" - "+item.workout+" ("+item.minutes+" mins) "+
+   '<button onclick="deleteItem('+index+')">❌</button>';
+
+   history.appendChild(li);
+
+   let row=document.createElement("div");
+   row.className="bar-row";
+
+   row.innerHTML =
+   '<div class="bar-label">'+item.workout+' - '+item.minutes+' mins</div>'+
+   '<div class="bar" style="width:'+Math.min(item.minutes*3,100)+'%;">'+item.minutes+'</div>';
+
+   chart.appendChild(row);
+
+ });
+
+ let totalWorkouts=data.length;
+ let avg = totalWorkouts ? (totalMinutes/totalWorkouts).toFixed(1) : 0;
+
+ let topWorkout="--";
+ let max=0;
+
+ for(let key in workoutCount){
+   if(workoutCount[key] > max){
+     max=workoutCount[key];
+     topWorkout=key;
+   }
+ }
+
+ document.getElementById("totalWorkouts").innerText=totalWorkouts;
+ document.getElementById("totalMinutes").innerText=totalMinutes;
+ document.getElementById("avgMinutes").innerText=avg;
+ document.getElementById("topWorkout").innerText=topWorkout;
+
+ let insight="Start logging workouts.";
+
+ if(totalWorkouts>0){
+
+   if(avg < 20){
+     insight="Low activity trend detected. Increase workout duration.";
+   }
+   else if(avg < 40){
+     insight="Good consistency. Maintain routine and improve gradually.";
+   }
+   else{
+     insight="Excellent activity level detected. Strong progress trend.";
+   }
+
+   if(topWorkout !== "--"){
+     insight += " Most frequent workout: " + topWorkout + ".";
+   }
+ }
+
+ document.getElementById("insight").innerText=insight;
+}
+
+window.onload=showAll;
+
 </script>
 
 </body>
